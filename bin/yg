@@ -1,0 +1,102 @@
+#!perl
+use strict;
+use warnings;
+use App::YG;
+
+my $yg = App::YG->new;
+$yg->run(@ARGV);
+
+__END__
+
+=encoding UTF-8
+
+=head1 NAME
+
+yg - log line filter, like \G of MySQL
+
+
+=head1 SYNOPSIS
+
+    $ yg [options] FILE ...
+
+    or
+
+    $ cat apache_log | yg [option]
+
+    options:
+        -p,  --parser         parser(default: apache-combined)
+        -d,  --delimiter      the delimiter of log line(default: tab)
+                              NOTE: if you set options -p and -d, it will use -d, -p option is ignored
+        -n,  --number         if you specify delimiter and -n, then show number points
+        -m,  --match          show log lines only if a keyword matches
+        -re, --regexp         show log lines only if regular expression matches
+        -i,  --ignore-case    regexp option: ignore case distinctions
+        -r,  --raw            also show raw log lines
+        -t,  --through        ignore yg command, output only raw log lines
+             --digest         show digest of raw log string
+
+        -h,  --help           show this help message
+        -V,  --version        show version
+
+
+=head1 DESCRIPTION
+
+When you check apache logs,
+
+    $ cat apache_log
+    127.0.0.1 - - [30/Sep/2012:12:34:56 +0900] "GET /foo HTTP/1.0" 200 123
+    127.0.0.1 - - [30/Sep/2012:12:34:57 +0900] "GET /bar HTTP/1.0" 301 124
+    127.0.0.1 - - [30/Sep/2012:12:34:58 +0900] "GET /baz HTTP/1.0" 402 125
+
+if you use yg, log lines showed like below:
+
+    $ yg apache_log
+
+    ******************** 1 ********************
+        Host: 127.0.0.1
+       Ident: -
+    Authuser: -
+        Date: 30/Sep/2012:12:34:56 +0900
+     Request: GET /foo HTTP/1.0
+      Status: 200
+       Bytes: 123
+
+    ******************** 2 ********************
+        Host: 127.0.0.1
+       Ident: -
+    Authuser: -
+        Date: 30/Sep/2012:12:34:57 +0900
+     Request: GET /bar HTTP/1.0
+      Status: 200
+       Bytes: 124
+
+    ******************** 3 ********************
+        Host: 127.0.0.1
+       Ident: -
+    Authuser: -
+        Date: 30/Sep/2012:12:34:58 +0900
+     Request: GET /baz HTTP/1.0
+      Status: 200
+       Bytes: 125
+
+easier for understanding.
+
+
+=head1 AUTHOR
+
+Dai Okabayashi E<lt>bayashi@cpan.orgE<gt>
+
+
+=head1 SEE ALSO
+
+L<App::YG>
+
+
+=head1 LICENSE
+
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See L<perlartistic>.
+
+
+=cut
+
