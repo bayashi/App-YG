@@ -9,7 +9,7 @@ use IO::Interactive qw/is_interactive/;
 our $VERSION = '0.01';
 
 our $CONFIG_FILE    = '.ygconfig';
-our $DEFAULT_PARSER = 'apache-common';
+our $DEFAULT_PARSER = 'apache-combined';
 our $DELIMITER_MAP = {
     space => " ",
     tab   => "\t",

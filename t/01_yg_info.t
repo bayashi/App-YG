@@ -1,6 +1,5 @@
 use strict;
 use Test::More;
-use Test::Output;
 
 my $command = 'bin/yg';
 
