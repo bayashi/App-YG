@@ -1,5 +1,10 @@
 Revision history for Perl extension App::YG
 
+0.03    Tue Nov 13 08:32:00 JST 2012
+    [NO CODE CHANGES]
+        - fixed POD
+        - added dependency modules in Build.PL
+
 0.02    Sun Oct 21 19:00:00 JST 2012
     [INCOMPATIBLE CHANGES]
         - changed default parser(Apache-common -> Apache-combined)

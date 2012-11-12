@@ -6,7 +6,7 @@ use Getopt::Long qw/GetOptionsFromArray/;
 use Pod::Usage;
 use IO::Interactive qw/is_interactive/;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 our $CONFIG_FILE    = '.ygconfig';
 our $DEFAULT_PARSER = 'apache-combined';
