@@ -9,6 +9,8 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/App/YG.pm',
     build_requires      => {
         'Test::More' => 0.88,
+        'Test::Warn' => 0,
+        'Exporter' => 0,
     },
     requires => {
         'perl' => '5.8.1',
