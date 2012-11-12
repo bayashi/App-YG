@@ -59,7 +59,7 @@ parse TAB-delimited logs, show logs vertically with number labels
 
 parse SPACE-delimited logs, show logs vertically
 
-    $ yg -d space tab_delimited_log
+    $ yg -d space space_delimited_log
 
 tailed log
 
@@ -121,7 +121,7 @@ Then C<yg> uses L<App::YG::Apache::Error> to parse log lines.
     ******************** 1 ********************
          Date: Sat Oct 06 17:34:17 2012
     Log_Level: error
-       Client: 123.220.65.13
+       Client: 127.0.0.1
       Message: File does not exist: /var/www/html/favicon.ico
 
 App::YG has below parsers.
