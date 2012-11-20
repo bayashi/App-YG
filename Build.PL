@@ -10,6 +10,7 @@ my $builder = Module::Build->new(
     build_requires      => {
         'Test::More' => 0.88,
         'Test::Warn' => 0,
+        'parent' => 0,
         'Exporter' => 0,
     },
     requires => {
