@@ -1,5 +1,9 @@
 Revision history for Perl extension App::YG
 
+0.041   Sun Dec  2 19:47:03 JST 2012
+    [NO CODE CHANGES]
+        - specified version of dependent module: Getopt::Long
+
 0.04    Wed Nov 21 08:05:00 JST 2012
     [NO CODE CHANGES]
         - added dependent module in Build.PL
