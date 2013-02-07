@@ -88,7 +88,7 @@ sub __out {
     $self->_output_raw($line_ref) if $self->config->{raw};
 
     if ( defined($self->config->{delimiter}) ) {
-        $self->_output_splited_line($line_ref, $self->config->{delimiter});
+        $self->_output_splited_line($line_ref);
     }
     else {
         $self->_output_parsed_line($line_ref);
@@ -141,14 +141,15 @@ sub _output_parsed_line {
 }
 
 sub _output_splited_line {
-    my ($self, $line_ref, $delimiter) = @_;
+    my ($self, $line_ref) = @_;
 
+    my $delimiter = $self->config->{delimiter};
     $delimiter = $DELIMITER_MAP->{$delimiter}
                     ? $DELIMITER_MAP->{$delimiter} : "\t";
     my $i = 1;
     my @cols = split $delimiter, ${$line_ref};
     my $j = length(scalar @cols);
-    for my $col (split $delimiter, ${$line_ref}) {
+    for my $col (@cols) {
         print sprintf("%${j}d: ", $i) if $self->config->{number};
         print "$col\n";
         $i++;
