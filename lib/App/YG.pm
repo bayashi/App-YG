@@ -87,7 +87,10 @@ sub __out {
     $self->_output_head($self->count, $digest);
     $self->_output_raw($line_ref) if $self->config->{raw};
 
-    if ( defined($self->config->{delimiter}) ) {
+    if ($self->config->{ltsv}) {
+        $self->_output_ltsv_line($line_ref);
+    }
+    elsif ( defined($self->config->{delimiter}) ) {
         $self->_output_splited_line($line_ref);
     }
     else {
@@ -122,6 +125,27 @@ sub _output_head {
 
 sub _output_raw {
     print "${$_[1]}\n";
+}
+
+sub _output_ltsv_line {
+    my ($self, $line_ref) = @_;
+
+    my $delimiter = "\t";
+
+    my @cols = split $delimiter, ${$line_ref};
+    my @labels;
+    for my $col (@cols) {
+        my ($label, $value) = split ':', $col;
+        push @labels, $label;
+    }
+    my $lablel_width = _max_label_len(\@labels);
+
+    for my $col (@cols) {
+        my ($label, $value) = split ':', $col;
+        print sprintf("%${lablel_width}s: ", $label);
+        print "$value\n";
+    }
+    print "\n";
 }
 
 sub _output_parsed_line {
@@ -233,6 +257,7 @@ sub _merge_opt {
         'r|raw'          => \$config->{raw},
         't|through'      => \$config->{through},
         'digest!'        => \$config->{digest},
+        'l|ltsv'         => \$config->{ltsv},
         'h|help'         => sub {
             pod2usage(1);
         },
