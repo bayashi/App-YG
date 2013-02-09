@@ -1,5 +1,9 @@
 Revision history for Perl extension App::YG
 
+0.061   Sat Feb  9 18:28:02 JST 2013
+    [NO CODE CHAMGE]
+        - added dependent module
+
 0.06    Sat Feb  9 15:53:29 JST 2013
     [NEW FEATURE]
         - be able to customize horizontal line
