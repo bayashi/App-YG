@@ -12,6 +12,14 @@ our $VERSION = '0.05';
 our $CONFIG_FILE    = '.ygconfig';
 our $DEFAULT_PARSER = 'apache-combined';
 our $DIGEST_LENGTH = 6;
+our $DEFAULT_COLOR = +{
+    label  => 'blue',
+    colon  => 'cyan',
+    value  => 'green',
+    hr     => 'yellow',
+    count  => 'red',
+    digest => 'magenta',
+};
 
 use Class::Accessor::Lite (
     new => 1,
@@ -121,10 +129,10 @@ sub _output_head {
     my $colon = $digest ? ': ' : '';
 
     if ($self->config->{color}) {
-        my $color_hr     = $self->config->{color_hr}     || 'yellow';
-        my $color_count  = $self->config->{color_count}  || 'black';
-        my $color_colon  = $self->config->{color_colon}  || 'cyan';
-        my $color_digest = $self->config->{color_digest} || 'magenta';
+        my $color_hr     = $self->config->{color_hr}     || $DEFAULT_COLOR->{hr};
+        my $color_count  = $self->config->{color_count}  || $DEFAULT_COLOR->{count};
+        my $color_colon  = $self->config->{color_colon}  || $DEFAULT_COLOR->{colon};
+        my $color_digest = $self->config->{color_digest} || $DEFAULT_COLOR->{digest};
         print colored('******************** ', $color_hr);
         print colored($count, $color_count);
         print colored($colon, $color_colon);
@@ -204,9 +212,9 @@ sub __output_line {
     my ($self, $label, $value) = @_;
 
     if ($self->config->{color}) {
-        my $color_label = $self->config->{color_label} || 'blue';
-        my $color_colon = $self->config->{color_colon} || 'cyan';
-        my $color_value = $self->config->{color_value} || 'green';
+        my $color_label = $self->config->{color_label} || $DEFAULT_COLOR->{label};
+        my $color_colon = $self->config->{color_colon} || $DEFAULT_COLOR->{colon};
+        my $color_value = $self->config->{color_value} || $DEFAULT_COLOR->{value};
         print colored($label, $color_label);
         print colored(': ', $color_colon) if $label;
         print colored("$value\n", $color_value);
