@@ -30,6 +30,7 @@ use Class::Accessor::Lite (
         labels
         label_format
         count
+        hr
     /],
 );
 
@@ -84,12 +85,14 @@ sub __out {
         return;
     }
 
-    my $digest = '';
-    if ($self->config->{digest}) {
-        $digest = substr(Digest::SHA1::sha1_hex(${$line_ref}), 0, $DIGEST_LENGTH);
+    if (!$self->config->{nohr}) {
+        my $digest = '';
+        if ($self->config->{digest}) {
+            $digest = substr(Digest::SHA1::sha1_hex(${$line_ref}), 0, $DIGEST_LENGTH);
+        }
+        $self->_output_head($self->count, $digest);
     }
 
-    $self->_output_head($self->count, $digest);
     $self->_output_raw($line_ref) if $self->config->{raw};
 
     if ($self->config->{ltsv}) {
@@ -129,15 +132,15 @@ sub _output_head {
     my $colon = $digest ? ': ' : '';
 
     if ($self->config->{color}) {
-        print colored('******************** ', $self->config->{_color}{hr});
+        print colored($self->hr.' ', $self->config->{_color}{hr});
         print colored($count, $self->config->{_color}{count});
         print colored($colon, $self->config->{_color}{colon});
         print colored($digest, $self->config->{_color}{digest});
-        print colored(' ********************', $self->config->{_color}{hr});
+        print colored(' '.$self->hr, $self->config->{_color}{hr});
         print "\n";
     }
     else {
-        print "******************** $count$colon$digest ********************\n";
+        print $self->hr. " $count$colon$digest ". $self->hr. "\n";
     }
 }
 
@@ -248,7 +251,17 @@ sub pre {
         }
     }
 
+    $self->hr($self->_hr);
+
     $self;
+}
+
+sub _hr {
+    my $self = shift;
+
+    my $hr     = $self->config->{hr}         || '*';
+    my $hr_num = $self->config->{'hr-count'} || 20;
+    return scalar($hr x $hr_num);
 }
 
 sub _set_config {
@@ -309,6 +322,9 @@ sub _merge_opt {
         'color-hr=s'     => \$config->{color_hr},
         'color-count=s'  => \$config->{color_count},
         'color-digest=s' => \$config->{color_digest},
+        'hr=s'           => \$config->{hr},
+        'hr-count=i'     => \$config->{'hr-count'},
+        'nohr'           => \$config->{'nohr'},
         'h|help'         => sub {
             pod2usage(1);
         },
