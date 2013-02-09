@@ -1,5 +1,9 @@
 Revision history for Perl extension App::YG
 
+0.062   Sat Feb  9 18:35:02 JST 2013
+    [NO CODE CHAMGE]
+        - version 0.061 is broken
+
 0.061   Sat Feb  9 18:28:02 JST 2013
     [NO CODE CHAMGE]
         - added dependent module
