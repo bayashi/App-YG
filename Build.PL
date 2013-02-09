@@ -20,6 +20,7 @@ my $builder = Module::Build->new(
         'Pod::Usage'   => 0,
         'IO::Interactive' => 0,
         'Class::Accessor::Lite' => 0,
+        'Term::ANSIColor' => 0,
     },
     recommends => {
         'Digest::SHA1' => 0,
