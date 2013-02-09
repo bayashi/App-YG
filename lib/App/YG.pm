@@ -7,7 +7,7 @@ use Pod::Usage;
 use IO::Interactive qw/is_interactive/;
 use Term::ANSIColor qw/colored/;
 
-our $VERSION = '0.041';
+our $VERSION = '0.05';
 
 our $CONFIG_FILE    = '.ygconfig';
 our $DEFAULT_PARSER = 'apache-combined';

@@ -1,5 +1,15 @@
 Revision history for Perl extension App::YG
 
+0.05    Sat Feb  9 14:06:14 JST 2013
+    [NEW FEATURE]
+        - show LTSV log: with --ltsv option(LTSV=Labeled Tab-separated Values)
+        - show colorized log: with --color option
+    [INCOMPATIBLE CHANGES]
+        - --delimiter option was removed. use --tab or --space option.
+    [IMPROVEMENTS]
+        - fixed POD
+        - added sample logs
+
 0.041   Sun Dec  2 19:47:03 JST 2012
     [NO CODE CHANGES]
         - specified version of dependent module: Getopt::Long
