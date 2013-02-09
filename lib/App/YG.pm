@@ -359,6 +359,8 @@ App::YG - log line filter, like \G of MySQL
     my $yg = App::YG->new;
     $yg->run(@ARGV);
 
+See command L<yg>.
+
 
 =head1 METHOD
 

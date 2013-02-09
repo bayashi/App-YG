@@ -55,15 +55,19 @@ parse Apache Error logs, show logs vertically with labels of element
 
 parse TAB-delimited logs, show logs vertically
 
-    $ yg -d tab_delimited_log
+    $ yg --tab tab_delimited_log
 
 parse TAB-delimited logs, show logs vertically with number labels
 
-    $ yg -d -n tab_delimited_log
+    $ yg --tab -n tab_delimited_log
 
 parse SPACE-delimited logs, show logs vertically
 
-    $ yg -d space space_delimited_log
+    $ yg --space space_delimited_log
+
+parse LTSV logs, show logs vertically
+
+    $ yg --ltsv ltsv_log
 
 tailed log
 
