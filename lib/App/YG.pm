@@ -11,10 +11,6 @@ our $VERSION = '0.041';
 
 our $CONFIG_FILE    = '.ygconfig';
 our $DEFAULT_PARSER = 'apache-combined';
-our $DELIMITER_MAP = {
-    space => " ",
-    tab   => "\t",
-};
 our $DIGEST_LENGTH = 6;
 
 use Class::Accessor::Lite (
