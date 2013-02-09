@@ -27,6 +27,8 @@ yg - log line filter, like \G of MySQL
         -p,  --parser         parser(default: apache-combined)
         -d,  --delimiter      the delimiter of log line(default: tab)
                               NOTE: if you set options -p and -d, it will use -d, -p option is ignored
+        -l,  --ltsv           parsed and show LTSV log
+
         -n,  --number         if you specify delimiter and -n, then show number points
         -m,  --match          show log lines only if a keyword matches
         -re, --regexp         show log lines only if regular expression matches
@@ -34,6 +36,8 @@ yg - log line filter, like \G of MySQL
         -r,  --raw            also show raw log lines
         -t,  --through        ignore yg command, output only raw log lines
              --digest         show digest of raw log string
+
+        -c, --color           show colorized log
 
         -h,  --help           show this help message
         -V,  --version        show version

@@ -5,6 +5,7 @@ use Carp qw/croak/;
 use Getopt::Long qw/GetOptionsFromArray/;
 use Pod::Usage;
 use IO::Interactive qw/is_interactive/;
+use Term::ANSIColor qw/colored/;
 
 our $VERSION = '0.041';
 
@@ -81,7 +82,7 @@ sub __out {
 
     my $digest = '';
     if ($self->config->{digest}) {
-        $digest = ": ". substr(Digest::SHA1::sha1_hex(${$line_ref}), 0, $DIGEST_LENGTH);
+        $digest = substr(Digest::SHA1::sha1_hex(${$line_ref}), 0, $DIGEST_LENGTH);
     }
 
     $self->_output_head($self->count, $digest);
@@ -120,7 +121,24 @@ sub _regexp {
 
 sub _output_head {
     my ($self, $count, $digest) = @_;
-    print "******************** $count$digest ********************\n";
+
+    my $colon = $digest ? ': ' : '';
+
+    if ($self->config->{color}) {
+        my $color_hr     = $self->config->{color_hr}     || 'yellow';
+        my $color_count  = $self->config->{color_count}  || 'black';
+        my $color_colon  = $self->config->{color_colon}  || 'cyan';
+        my $color_digest = $self->config->{color_digest} || 'magenta';
+        print colored('******************** ', $color_hr);
+        print colored($count, $color_count);
+        print colored($colon, $color_colon);
+        print colored($digest, $color_digest);
+        print colored(' ********************', $color_hr);
+        print "\n";
+    }
+    else {
+        print "******************** $count$colon$digest ********************\n";
+    }
 }
 
 sub _output_raw {
@@ -142,8 +160,7 @@ sub _output_ltsv_line {
 
     for my $col (@cols) {
         my ($label, $value) = split ':', $col;
-        print sprintf("%${lablel_width}s: ", $label);
-        print "$value\n";
+        $self->__output_line( sprintf("%${lablel_width}s", $label), $value );
     }
     print "\n";
 }
@@ -158,7 +175,7 @@ sub _output_parsed_line {
     }
     my $i = 0;
     for my $label (@{$self->labels}) {
-        print sprintf($self->label_format, $label, $logs->[$i]);
+        $self->__output_line( sprintf($self->label_format, $label), $logs->[$i] );
         $i++;
     }
     print "\n";
@@ -172,13 +189,38 @@ sub _output_splited_line {
                     ? $DELIMITER_MAP->{$delimiter} : "\t";
     my $i = 1;
     my @cols = split $delimiter, ${$line_ref};
-    my $j = length(scalar @cols);
-    for my $col (@cols) {
-        print sprintf("%${j}d: ", $i) if $self->config->{number};
-        print "$col\n";
-        $i++;
+
+    if ($self->config->{number}) {
+        my $j = length(scalar @cols);
+        for my $col (@cols) {
+            $self->__output_line( sprintf("%${j}d", $i), $col );
+            $i++;
+        }
+    }
+    else {
+        for my $col (@cols) {
+            $self->__output_line( '', $col );
+            $i++;
+        }
     }
     print "\n";
+}
+
+sub __output_line {
+    my ($self, $label, $value) = @_;
+
+    if ($self->config->{color}) {
+        my $color_label = $self->config->{color_label} || 'blue';
+        my $color_colon = $self->config->{color_colon} || 'cyan';
+        my $color_value = $self->config->{color_value} || 'green';
+        print colored($label, $color_label);
+        print colored(': ', $color_colon) if $label;
+        print colored("$value\n", $color_value);
+    }
+    else {
+        print "$label: " if $label;
+        print "$value\n";
+    }
 }
 
 sub pre {
@@ -187,7 +229,6 @@ sub pre {
     my $config = $self->_set_config;
     $self->_merge_opt($config, $argv);
     $self->config($config);
-
     $self->parse_class(
         $self->_load_parser($config->{parser} || $DEFAULT_PARSER)
     );
@@ -197,7 +238,7 @@ sub pre {
         $self->labels( &{ $self->parse_class. '::labels' }() );
     }
     $self->label_format(
-        '%'. _max_label_len($self->labels). "s: %s\n"
+        '%'. _max_label_len($self->labels). 's'
     );
 
     if ($self->config->{digest}) {
@@ -258,6 +299,13 @@ sub _merge_opt {
         't|through'      => \$config->{through},
         'digest!'        => \$config->{digest},
         'l|ltsv'         => \$config->{ltsv},
+        'c|color!'       => \$config->{color},
+        'color-label=s'  => \$config->{color_label},
+        'color-colon=s'  => \$config->{color_colon},
+        'color-value=s'  => \$config->{color_value},
+        'color-hr=s'     => \$config->{color_hr},
+        'color-count=s'  => \$config->{color_count},
+        'color-digest=s' => \$config->{color_digest},
         'h|help'         => sub {
             pod2usage(1);
         },
