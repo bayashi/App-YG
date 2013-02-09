@@ -1,5 +1,14 @@
 Revision history for Perl extension App::YG
 
+0.06    Sat Feb  9 15:53:29 JST 2013
+    [NEW FEATURE]
+        - be able to customize horizontal line
+            --nohr:     hide horizontal line
+            --hr:       change horizontal line character
+            --hr-count: change numer of hr character
+    [IMPROVEMENTS]
+        - change color for count number in the horizontal line(black -> red)
+
 0.05    Sat Feb  9 14:06:14 JST 2013
     [NEW FEATURE]
         - show LTSV log: with --ltsv option(LTSV=Labeled Tab-separated Values)
