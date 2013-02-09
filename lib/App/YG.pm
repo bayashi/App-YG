@@ -91,7 +91,7 @@ sub __out {
     if ($self->config->{ltsv}) {
         $self->_output_ltsv_line($line_ref);
     }
-    elsif ( defined($self->config->{delimiter}) ) {
+    elsif ( $self->config->{tab} || $self->config->{space} ) {
         $self->_output_splited_line($line_ref);
     }
     else {
@@ -184,9 +184,7 @@ sub _output_parsed_line {
 sub _output_splited_line {
     my ($self, $line_ref) = @_;
 
-    my $delimiter = $self->config->{delimiter};
-    $delimiter = $DELIMITER_MAP->{$delimiter}
-                    ? $DELIMITER_MAP->{$delimiter} : "\t";
+    my $delimiter = $self->config->{space} ? ' ' : "\t";
     my $i = 1;
     my @cols = split $delimiter, ${$line_ref};
 
@@ -290,7 +288,8 @@ sub _merge_opt {
         $argv,
         'f|file=s@'      => \$config->{file},
         'p|parser=s'     => \$config->{parser},
-        'd|delimiter:s'  => \$config->{delimiter},
+        'tab'            => \$config->{tab},
+        'space'          => \$config->{space},
         'n|number!'      => \$config->{number},
         'm|match=s'      => \$config->{match},
         're|regexp=s'    => \$config->{regexp},
@@ -298,7 +297,7 @@ sub _merge_opt {
         'r|raw'          => \$config->{raw},
         't|through'      => \$config->{through},
         'digest!'        => \$config->{digest},
-        'l|ltsv'         => \$config->{ltsv},
+        'ltsv'           => \$config->{ltsv},
         'c|color!'       => \$config->{color},
         'color-label=s'  => \$config->{color_label},
         'color-colon=s'  => \$config->{color_colon},
